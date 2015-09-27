@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>CreateUserServlet</servlet-name>
+        <servlet-class>Client.CreateUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateUserServlet</servlet-name>
+        <url-pattern>/setNewClient</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserSearchServlet</servlet-name>
+        <servlet-class>Client.UserSearchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserSearchServlet</servlet-name>
+        <url-pattern>/searchClient</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddCarServlet</servlet-name>
+        <servlet-class>Car.AddCarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddCarServlet</servlet-name>
+        <url-pattern>/addCar</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ClientInfoServlet</servlet-name>
+        <servlet-class>Client.ClientInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClientInfoServlet</servlet-name>
+        <url-pattern>/getInfo</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddOrderServlet</servlet-name>
+        <servlet-class>Order.AddOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddOrderServlet</servlet-name>
+        <url-pattern>/addOrder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CarInfoServlet</servlet-name>
+        <servlet-class>Car.CarsOrdersInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CarInfoServlet</servlet-name>
+        <url-pattern>/getCarInfo</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderInfoServlet</servlet-name>
+        <servlet-class>Order.OrderInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderInfoServlet</servlet-name>
+        <url-pattern>/getOrderInfo</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteOrderServlet</servlet-name>
+        <servlet-class>Order.DeleteOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteOrderServlet</servlet-name>
+        <url-pattern>/deleteOrder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangeOrderServlet</servlet-name>
+        <servlet-class>Order.ChangeOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangeOrderServlet</servlet-name>
+        <url-pattern>/changeOrder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteCarServlet</servlet-name>
+        <servlet-class>Car.DeleteCarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteCarServlet</servlet-name>
+        <url-pattern>/deleteCar</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangeCarServlet</servlet-name>
+        <servlet-class>Car.ChangeCarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangeCarServlet</servlet-name>
+        <url-pattern>/changeCar</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetCarServlet</servlet-name>
+        <servlet-class>Car.GetCarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetCarServlet</servlet-name>
+        <url-pattern>/getCar</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+</web-app>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+
+</head>
+
+<style>
+    body {background-color:#bdc3c7}
+</style>
+
+
+<script>
+
+    function searchClient() {
+        if ($("#uName").val() && $("#uSurname").val())
+            $.ajax({
+                url: 'searchClient',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    "name": $("#uName").val(), "surname": $("#uSurname").val(), "birthDate": "",
+                    "adress": "", "phone": "", "email": "", "message":""
+                },
+                success: function (data) {
+                    if(data.adress!="") {
+                        $("#message1").text("Client found. Client name: " + data.name + ". Client surname: " + data.surname +
+                                ". Date of birth: " + data.birthDate + ". Adress: " + data.adress + ". Phone: " + data.phone +
+                                ". Email: " + data.email)
+                    } else {$("#message1").text("Client does not exists")}
+                }
+            });
+    }
+
+    function getClientsInfo() {
+        if ($("#uName").val() && $("#uSurname").val())
+            $.ajax({
+                url: 'searchClient',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    "name": $("#uName").val(), "surname": $("#uSurname").val(), "birthDate": "",
+                    "adress": "", "phone": "", "email": "", "message":""
+                },
+                success: function (data) {
+                    if (data.message!="") {
+                        window.location.href ="clientDetails.html?"+data.message;
+                    } else {
+                        $("#message1").text("You must enter existing client or register new on Register client page");
+                    }
+                }
+            });
+    }
+
+    $(document).ready(function(){
+        $('#nameform').validate({});
+        $("#myButton").on("click",function(){
+            if ($('#nameform').valid())
+            searchClient();
+        });
+        $("#myButton2").on("click",function(){
+            if ($('#nameform').valid())
+            getClientsInfo();
+        });
+    });
+
+</script>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <p class="navbar-brand" href="index.html">Web application for practice</p>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">Representation</a></li>
+                <li><a href="clientCreation.html">Register client</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Example of administration web application</h2>
+    </div>
+</div>
+
+<div class="container">
+    <form class="form-horizontal" role="form" id="nameform">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="uName">User's name:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="uName" placeholder="Enter name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="uSurname">User's surname:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="uSurname" placeholder="Enter surname" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" id="myButton" class="btn btn-default">Check client</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10"  >
+            <div class="panel panel-default">
+                <div class="panel-body" id="message1">There will be information about existing client</div>
+            </div>
+        </div>
+        <div class="col-sm-2"  >
+            <button type="button" id="myButton2" class="btn btn-default" >Look details</button>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

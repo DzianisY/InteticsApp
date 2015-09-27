@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="AppEngine API">
+    <CLASSES>
+      <root url="file://C:/Program Files/Java/appengine-java-sdk-1.9.24/lib/user" />
+      <root url="file://C:/Program Files/Java/appengine-java-sdk-1.9.24/lib/opt/user/appengine-endpoints/v1" />
+      <root url="file://C:/Program Files/Java/appengine-java-sdk-1.9.24/lib/opt/user/jsr107/v1" />
+      <root url="jar://C:/Program Files/Java/jdk1.7.0_79/lib/guava-18.0.jar!/" />
+      <root url="jar://C:/Program Files/Java/jdk1.7.0_79/lib/markdown4j-2.2.jar!/" />
+      <root url="jar://C:/Program Files/Java/jdk1.7.0_79/lib/objectify-5.1.6-beta-1.jar!/" />
+      <root url="jar://C:/Program Files/Java/jdk1.7.0_79/lib/org.json-20120521.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://C:/Program Files/Java/appengine-java-sdk-1.9.24/lib/opt/user/appengine-endpoints/v1" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/Java/appengine-java-sdk-1.9.24/lib/opt/user/jsr107/v1" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/Java/appengine-java-sdk-1.9.24/lib/user" recursive="false" />
+  </library>
+</component>

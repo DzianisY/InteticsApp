@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+
+</head>
+
+<style>
+    body {background-color:#bdc3c7}
+</style>
+
+<script>
+
+    var query = window.location.search;
+    var backwards;
+    if (query.substring(0, 1) == '?') {query = query.substring(1);}
+
+    function getCar() {
+        $.ajax({
+            url: 'getCar',
+            type: 'POST',
+            data: {"number": query},
+            success: function (data) {
+                var obj=JSON.parse(data);
+                $("#make").val(obj.make.toString());
+                $("#model").val(obj.model.toString());
+                $("#year").val(obj.year.toString());
+                $("#vin").val(obj.vin.toString());
+                backwards = obj.backwards.toString();
+            }
+        });
+    }
+
+    function changeInfo() {
+        if($("#make").val() && $("#model").val() && $("#year").val() && $("#vin").val()){$.ajax({
+            url: '/changeCar',
+            type: 'POST',
+            data: {"make": $("#make").val(), "model": $("#model").val(), "year": $("#year").val(),
+                "vin":$("#vin").val(),"number": query},
+            success: function (data) {
+                $("#message3").text("Car's info successfully changed")
+            }
+        });} else {$("#message3").text("You must fill all fields")}
+    }
+
+    function addOrder() {
+        if ($("#order").val() && $("#amount").val() && $("#status").val() )
+        {$.ajax({
+                url: 'addOrder',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "order": $("#order").val(), "amount": $("#amount").val(), "status": $("#status").val(), "linkPar": query
+                },
+                complete: function (data) {
+                    getInfo();
+                }
+            });}else{$("#message2").text("You must fill all fields. Or you done a mistake. Be careful.")}
+    }
+
+    function getInfo() {
+        $.ajax({
+            url: 'getCarInfo',
+            type: 'POST',
+            data: {"number": query},
+            success: function (data) {
+                var obj=JSON.parse(data);
+                $("#message1").text("Existing car's orders");
+                for(i=0;;i++){
+                    var row = document.createElement('div');
+                    row.class="container";
+                    var links = document.createElement("A");
+                    var texts = document.createTextNode("Order: "+obj[i].order+". Order amount: "+obj[i].amount+
+                            ". Order status: " +obj[i].status);
+                    links.setAttribute("href", "orderDetails.html?"+obj[i].id);
+                    links.appendChild(texts);
+                    row.appendChild(links);
+                    document.getElementById("message1").appendChild(row);
+                }
+            }
+        });
+    }
+
+    function deleteCar() {
+        $.ajax({
+            url: '/deleteCar',
+            type: 'POST',
+            data: {"number": query},
+            success: function (data) {
+                var obj = JSON.parse(data);
+                if (obj.message!="") {
+                    alert("Car deleted");
+                    window.location.href = "clientDetails.html?" + obj.message;
+                } else { $("#message3").text("You can not delete car with existing orders") }
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        $('#nameform2').validate({});
+        $('#nameform1').validate({});
+        getCar();
+        getInfo();
+        $("#myButton").on("click",function(){
+            if ($('#nameform2').valid())
+            addOrder();
+            getInfo();
+        });
+        $("#myButton1").on("click",function(){
+            if ($('#nameform1').valid())
+            changeInfo(); else $("#message1").text("You must fill all fields. Or you done a mistake. Be careful.")
+        });
+        $("#myButton2").on("click",function(){
+            deleteCar();
+        });
+        $("#myButton3").on("click",function(){
+            window.location.href="clientDetails.html?"+backwards;
+        });
+    });
+
+</script>
+
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <p class="navbar-brand" href="index.html">Web application for practice</p>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Representation</a></li>
+                <li><a href="clientCreation.html">Register client</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <form class="form-horizontal" role="form" id="nameform1">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="make">Manufacturer:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="make" placeholder="Enter manufacturer" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="model">Model:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="model" placeholder="Enter model" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="year">Year:</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="year" placeholder="Enter year" required min="1900" max="2050">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="vin">VIN:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="vin" placeholder="Enter VIN" required>
+            </div>
+        </div>
+    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8"  >
+                <div class="panel panel-default">
+                    <div class="panel-body" id="message3">Type info in fields above for changing car's info</div>
+                </div>
+            </div>
+            <div class="col-sm-2"  >
+                <button type="submit" id="myButton1" class="btn btn-default" >Change car's info</button>
+            </div>
+            <div class="col-md-1"  >
+                <button type="submit" id="myButton2" class="btn btn-default" >Delete car</button>
+            </div>
+            <div class="col-md-1"  >
+                <button type="submit" id="myButton3" class="btn btn-default" >Back</button>
+            </div>
+        </div>
+    </div>
+<div class="container">
+    <form class="form-horizontal" role="form" id="nameform2">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="order">Order:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="order" placeholder="Enter order" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="amount">Order amount:</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="amount" placeholder="Enter order amount" required min="0" max="10000">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="status" class="col-sm-2 control-label">Order status:</label>
+            <div class="input-group">
+                 <span class="input-group-btn">
+                        <select class="form-control" name="status" id="status">
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="In progress">In progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                 </span>
+            </div>
+        </div>
+    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10"  >
+                <div class="panel panel-default">
+                    <div class="panel-body" id="message2">Type info in fields above for creation new order</div>
+                </div>
+            </div>
+            <div class="col-sm-2"  >
+                <button type="submit" id="myButton" class="btn btn-default" >Add new order</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10"  >
+                <div class="panel panel-default">
+                    <div class="panel-body" id="message1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

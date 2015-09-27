@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+
+</head>
+
+<style>
+    body {background-color:#bdc3c7}
+</style>
+
+
+<script>
+    function setNewClient() {
+        if ($("#name").val() && $("#surname").val() && $("#birthDate").val() && $("#adress").val() && $("#phone").val() && $("#email").val()) {
+                    $.ajax({
+                    url: 'setNewClient',
+                    type: 'POST',
+                    dataType: 'json',
+                        data: {
+                         "name": $("#name").val(), "surname": $("#surname").val(), "birthDate": $("#birthDate").val(),
+                         "adress": $("#adress").val(), "phone": $("#phone").val(), "email": $("#email").val()
+                    },
+                    complete: function () {
+                        alert("Client created");
+                        window.location.href="index.html";
+                    }
+                    })} else {
+                        $("#message1").text("You must fill all the fields");
+                    }
+    }
+
+        $(document).ready(function(){
+
+            $('#nameform').validate({});
+
+            $("#myButton").on("click",function(){
+                if ($('#nameform').valid())
+                setNewClient();
+            });
+        });
+</script>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <p class="navbar-brand" href="index.html">Web application for practice</p>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Representation</a></li>
+                <li  class="active"><a href="clientCreation.html">Register client</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <form class="form-horizontal" role="form" id="nameform">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Client's name:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" placeholder="Enter name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="surname">Client's surname:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="surname" placeholder="Enter surname" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="birthDate">Date of birth:</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control" id="birthDate" placeholder="Enter date of birth" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="adress">Address:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="adress" placeholder="Enter address" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="phone">Phone:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="phone" placeholder="Enter phone" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Email:</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10"  >
+                    <div class="panel panel-default">
+                        <div class="panel-body" id="message1">There will be information about creation of client</div>
+                    </div>
+                </div>
+                <div class="col-sm-2"  >
+                    <button type="button" id="myButton" class="btn btn-default" >Create new client</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

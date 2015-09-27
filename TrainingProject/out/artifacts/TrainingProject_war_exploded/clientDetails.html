@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+
+</head>
+
+<style>
+    body {background-color:#bdc3c7}
+</style>
+
+<script>
+
+    var query = window.location.search;
+    if (query.substring(0, 1) == '?') {
+        query = query.substring(1);
+    }
+
+    function addCar() {
+        if ($("#make").val() && $("#model").val() &&$("#year").val() && $("#vin").val())
+        {$.ajax({
+                url: 'addCar',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "make": $("#make").val(), "model": $("#model").val(), "year": $("#year").val(),
+                    "vin": $("#vin").val(), "linkPar": query
+                },
+                complete: function (data) {
+                    getInfo();
+                }
+            });} else {$("#message2").text("You must fill all fields")}
+    }
+
+    function getInfo() {
+            $.ajax({
+                url: 'getInfo',
+                type: 'POST',
+                data: {"number": query},
+                success: function (data) {
+                    var obj=JSON.parse(data);
+                    $("#message1").text("Existing car's links");
+                    for(i=0;;i++){
+                        var row = document.createElement('div');
+                        row.class="container";
+                        var links = document.createElement("A");
+                        var texts = document.createTextNode("Manufactured in: "+obj[i].make+". Model: "+obj[i].model+
+                                ". Year: " +obj[i].year+". VIN: "+obj[i].vin);
+                        links.setAttribute("href", "carDetails.html?"+obj[i].id);
+                        links.appendChild(texts);
+                        row.appendChild(links);
+                        document.getElementById("message1").appendChild(row);
+                    }
+                }
+            });
+    }
+
+    $(document).ready(function(){
+        getInfo();
+        $('#nameform').validate({});
+        $("#myButton").on("click",function(){
+            if ($('#nameform').valid())
+            addCar();
+        });
+    });
+
+</script>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <p class="navbar-brand" href="index.html">Web application for practice</p>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Representation</a></li>
+                <li><a href="clientCreation.html">Register client</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <form class="form-horizontal" role="form" id="nameform">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="make">Manufacturer:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="make" placeholder="Enter manufacturer" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="model">Model:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="model" placeholder="Enter model" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="year">Year:</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="year" placeholder="Enter year" required min="1900" max="2050">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="vin">VIN:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="vin" placeholder="Enter VIN" required>
+            </div>
+        </div>
+    </form>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10"  >
+                <div class="panel panel-default">
+                    <div class="panel-body" id="message2">Type info in fields above for creation new car</div>
+                </div>
+            </div>
+            <div class="col-sm-2"  >
+                <button type="submit" id="myButton" class="btn btn-default" >Add new car</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10"  >
+                <div class="panel panel-default">
+                    <div class="panel-body" id="message1">Existing car's links</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
